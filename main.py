@@ -2,6 +2,12 @@ import os
 import decky
 
 class Plugin:
+    def __init__(self):
+        # Track current offsets so that we don't rely on repeated function calls alone.
+        # Initialize them to None so we can check if they've been set yet.
+        self.current_offset_x = None
+        self.current_offset_y = None
+
     async def write_crosshair_config(self, offset_x: int, offset_y: int):
         try:
             mangohud_file = None
@@ -43,14 +49,27 @@ offset_y={offset_y}
         await self.write_crosshair_config(self.current_offset_x, self.current_offset_y)
 
     async def adjust_crosshair_offset(self, x_delta: int, y_delta: int):
-        if not hasattr(self, 'current_offset_x'):
+        # If we haven't set them yet, default to 640x400 (Steam Deck size)
+        if self.current_offset_x is None:
             self.current_offset_x = 640
-        if not hasattr(self, 'current_offset_y'):
+        if self.current_offset_y is None:
             self.current_offset_y = 400
 
         self.current_offset_x += x_delta
         self.current_offset_y += y_delta
+
         await self.write_crosshair_config(self.current_offset_x, self.current_offset_y)
+
+    async def get_current_offsets(self) -> list:
+        """
+        Returns the current [offset_x, offset_y].
+        If they haven't been set yet, default to 640x400.
+        """
+        if self.current_offset_x is None:
+            self.current_offset_x = 640
+        if self.current_offset_y is None:
+            self.current_offset_y = 400
+        return [self.current_offset_x, self.current_offset_y]
 
     async def _main(self):
         decky.logger.info("Crosshair Plugin initialized!")
