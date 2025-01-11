@@ -5,49 +5,62 @@ import {
   staticClasses,
 } from "@decky/ui";
 import { callable, definePlugin } from "@decky/api";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaCrosshairs } from "react-icons/fa";
 
-// Callable Python methods for 800p, 1080p crosshairs, and dynamic offset adjustments
 const make800pCrosshair = callable<[], void>("make_800p_crosshair");
 const make1080pCrosshair = callable<[], void>("make_1080p_crosshair");
-const adjustOffset = callable<["x" | "y", number], void>("adjust_offset"); // Callable with no explicit type (auto-handled)
+const adjustOffset = callable<["x" | "y", number], void>("adjust_offset");
+const getCurrentOffsets = callable<[], { offsetX: number; offsetY: number }>("get_current_offsets");
 
 function Content() {
   const [status, setStatus] = useState<string>("No action yet");
-  const [offsetX, setOffsetX] = useState<number>(960); // Default for 1080p
-  const [offsetY, setOffsetY] = useState<number>(540); // Default for 1080p
+  const [offsetX, setOffsetX] = useState<number>(960);
+  const [offsetY, setOffsetY] = useState<number>(540);
 
-  // Apply crosshair for 800p resolution
+  useEffect(() => {
+    const fetchOffsets = async () => {
+      try {
+        const { offsetX, offsetY } = await getCurrentOffsets();
+        setOffsetX(offsetX);
+        setOffsetY(offsetY);
+      } catch (error) {
+        console.error("Failed to fetch current offsets:", error);
+      }
+    };
+
+    fetchOffsets();
+  }, []);
+
   const on800pClick = async () => {
     try {
       await make800pCrosshair();
-      setOffsetX(640); // Center for 800p
-      setOffsetY(400);
+      const { offsetX, offsetY } = await getCurrentOffsets();
+      setOffsetX(offsetX);
+      setOffsetY(offsetY);
       setStatus("Crosshair for Deck (800p) applied!");
     } catch (error) {
-      console.error(error);
+      console.error("Error applying 800p crosshair:", error);
       setStatus("Failed to apply 800p crosshair.");
     }
   };
 
-  // Apply crosshair for 1080p resolution
   const on1080pClick = async () => {
     try {
       await make1080pCrosshair();
-      setOffsetX(960); // Center for 1080p
-      setOffsetY(540);
+      const { offsetX, offsetY } = await getCurrentOffsets();
+      setOffsetX(offsetX);
+      setOffsetY(offsetY);
       setStatus("Crosshair for 1080p applied!");
     } catch (error) {
-      console.error(error);
+      console.error("Error applying 1080p crosshair:", error);
       setStatus("Failed to apply 1080p crosshair.");
     }
   };
 
-  // Adjust crosshair offsets dynamically
   const adjustCrosshairOffset = async (axis: "x" | "y", delta: number) => {
     try {
-      await adjustOffset(axis, delta); // Pass axis and delta in array format
+      await adjustOffset(axis, delta);
       if (axis === "x") {
         setOffsetX((prev) => prev + delta);
       } else {
@@ -62,7 +75,6 @@ function Content() {
 
   return (
     <PanelSection title="Crosshair Plugin">
-      {/* Buttons for preset crosshairs */}
       <PanelSectionRow>
         <ButtonItem layout="below" onClick={on800pClick}>
           Make Crosshair for Deck (800p)
@@ -76,8 +88,6 @@ function Content() {
       <PanelSectionRow>
         <div>Status: {status}</div>
       </PanelSectionRow>
-
-      {/* Dynamic adjustment controls */}
       <PanelSection title="Adjust Crosshair Position">
         <PanelSectionRow>
           <div>Horizontal Offset (X): {offsetX}</div>
