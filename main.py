@@ -19,11 +19,11 @@ class Plugin:
 legacy_layout=false
 background_alpha=0
 alpha=1
-font_size=150
+font_size=250
 background_color=020202
 width=5
 text_color=FF007B
-custom_text=⊕
+custom_text=+
 offset_x={offset_x}
 offset_y={offset_y}
 """
