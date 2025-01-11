@@ -19,7 +19,7 @@ class Plugin:
 legacy_layout=false
 background_alpha=0
 alpha=1
-font_size=250
+font_size=1000
 background_color=020202
 text_color=FF007B
 custom_text=+
