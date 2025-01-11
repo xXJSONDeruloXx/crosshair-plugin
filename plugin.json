@@ -1,6 +1,6 @@
 {
-  "name": "Example Plugin",
-  "author": "John Doe",
+  "name": "Crosshair Plugin",
+  "author": "JSON Derulo",
   "flags": ["debug", "_root"],
   "api_version": 1,
   "publish": {
