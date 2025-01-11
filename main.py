@@ -2,7 +2,12 @@ import os
 import decky
 
 class Plugin:
-    async def write_crosshair_config(self, offset_x: int, offset_y: int):
+    def __init__(self):
+        # Initialize offsets with defaults (centered for 1080p)
+        self.offset_x = 960
+        self.offset_y = 540
+
+    async def write_crosshair_config(self):
         try:
             # Locate the MangoHud file in /tmp/
             mangohud_file = None
@@ -19,11 +24,12 @@ class Plugin:
 legacy_layout=false
 background_alpha=0
 alpha=1
+font_size=1
 background_color=020202
 text_color=FF007B
-custom_text=-+-
-offset_x={offset_x}
-offset_y={offset_y}
+custom_text=+
+offset_x={self.offset_x}
+offset_y={self.offset_y}
 """
 
             # Overwrite the MangoHud file
@@ -35,13 +41,29 @@ offset_y={offset_y}
             decky.logger.error(f"Error in write_crosshair_config: {str(e)}")
             raise e
 
-    async def make_800p_crosshair(self):
-        # Parameters for 800p resolution (1280x800, 16:10)
-        await self.write_crosshair_config(offset_x=640, offset_y=400)
+    async def adjust_offset(self, axis: str, delta: int):
+        try:
+            if axis == "x":
+                self.offset_x += delta
+            elif axis == "y":
+                self.offset_y += delta
+            else:
+                raise ValueError("Invalid axis specified. Must be 'x' or 'y'.")
+            
+            await self.write_crosshair_config()
+            decky.logger.info(f"Offset adjusted: {axis}={delta}")
+        except Exception as e:
+            decky.logger.error(f"Error in adjust_offset: {str(e)}")
 
-    async def make_1080p_crosshair(self):
-        # Parameters for 1080p resolution (1920x1080, 16:9)
-        await self.write_crosshair_config(offset_x=960, offset_y=540)
+    async def set_800p_crosshair(self):
+        self.offset_x = 640
+        self.offset_y = 400
+        await self.write_crosshair_config()
+
+    async def set_1080p_crosshair(self):
+        self.offset_x = 960
+        self.offset_y = 540
+        await self.write_crosshair_config()
 
     async def _main(self):
         decky.logger.info("Crosshair Plugin initialized!")
