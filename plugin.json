@@ -1,5 +1,5 @@
 {
-  "name": "Crosshair HUD",
+  "name": "Crosshair",
   "author": "JSON Derulo",
   "flags": ["debug", "_root"],
   "api_version": 1,
