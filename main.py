@@ -46,8 +46,8 @@ offset_y={offset_y}
         await self.write_crosshair_config(self.current_offset_x, self.current_offset_y)
 
     async def make_1080p_crosshair(self):
-        self.current_offset_x = 960
-        self.current_offset_y = 540
+        self.current_offset_x = 938
+        self.current_offset_y = 520
         await self.write_crosshair_config(self.current_offset_x, self.current_offset_y)
 
     async def adjust_crosshair_offset(self, x_delta: int, y_delta: int):
