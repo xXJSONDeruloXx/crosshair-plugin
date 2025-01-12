@@ -28,8 +28,8 @@ text_color=FF007B
 custom_text=-----
 custom_text=| + |
 custom_text=-----
-offset_x=960
-offset_y=540
+offset_x={offset_x}
+offset_y={offset_y}
 """
 
             with open(mangohud_file, "w") as f:
