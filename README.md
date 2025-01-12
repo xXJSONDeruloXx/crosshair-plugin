@@ -1,7 +1,5 @@
 # Crosshair Plugin
 
-![alt text](83EC67A8B25603F81A57F5C72715001021AC8484.jpeg)
-
 The Crosshair Plugin is a tool for the Steam Deck that overlays a crosshair on the screen. It uses MangoHud's configuration to display a customizable aiming aid, making it useful for games that don’t provide a native crosshair.
 
 ## Features
