@@ -1,7 +1,7 @@
 {
-  "name": "decky-plugin-template",
-  "version": "0.0.1",
-  "description": "A template to quickly create decky plugins from scratch, based on TypeScript and webpack",
+  "name": "precision-crosshair-hud",
+  "version": "1.0.0",
+  "description": "A Decky plugin that overlays a customizable crosshair for improved aiming precision in games. Perfect for FPS and other accuracy-focused games on the Steam Deck.",
   "type": "module",
   "scripts": {
     "build": "rollup -c",
@@ -10,21 +10,24 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SteamDeckHomebrew/decky-plugin-template.git"
+    "url": "https://github.com/xXJSONDeruloXx/precision-crosshair-hud.git"
   },
   "keywords": [
     "decky",
-    "plugin",
-    "plugin-template",
     "steam-deck",
-    "deck"
+    "plugin",
+    "crosshair",
+    "overlay",
+    "aiming",
+    "HUD",
+    "gaming"
   ],
-  "author": "You <you@you.tld>",
+  "author": "JSON Derulo <jsonderulo@nothanks.com>",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/SteamDeckHomebrew/decky-plugin-template/issues"
+    "url": "https://github.com/xXJSONDeruloXx/precision-crosshair-hud/issues"
   },
-  "homepage": "https://github.com/SteamDeckHomebrew/decky-plugin-template#readme",
+  "homepage": "https://github.com/xXJSONDeruloXx/precision-crosshair-hud#readme",
   "devDependencies": {
     "@decky/rollup": "^1.0.1",
     "@decky/ui": "^4.7.2",

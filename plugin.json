@@ -1,11 +1,11 @@
 {
-  "name": "Crosshair Plugin",
+  "name": "Crosshair HUD",
   "author": "JSON Derulo",
   "flags": ["debug", "_root"],
   "api_version": 1,
   "publish": {
-    "tags": ["template", "root"],
-    "description": "Decky example plugin.",
-    "image": "https://opengraph.githubassets.com/1/SteamDeckHomebrew/PluginLoader"
+    "tags": ["crosshair", "aim", "overlay", "HUD"],
+    "description": "Repurpose the performance overlay into a customizable crosshair.",
+    "image": "https://steamuserimages-a.akamaihd.net/ugc/25432209482234967/83EC67A8B25603F81A57F5C72715001021AC8484/"
   }
 }
