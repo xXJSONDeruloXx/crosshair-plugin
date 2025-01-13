@@ -11,9 +11,9 @@ import { FaCrosshairs } from "react-icons/fa";
 // Existing Python methods
 const make800pCrosshair = callable<[], void>("make_800p_crosshair");
 const make1080pCrosshair = callable<[], void>("make_1080p_crosshair");
-const removeCrosshair = callable<[], void>("remove_crosshair");
 const adjustCrosshairOffset = callable<[number, number], void>("adjust_crosshair_offset");
 const getCurrentOffsets = callable<[], number[]>("get_current_offsets");
+const removeCrosshair = callable<[], void>("remove_crosshair"); // New callable
 
 function Content() {
   const [status, setStatus] = useState("No action yet");
@@ -27,7 +27,6 @@ function Content() {
       setYOffset(y);
     } catch (error) {
       console.error(error);
-      // Keep old values if there's an error
     }
   };
 
@@ -57,6 +56,8 @@ function Content() {
     try {
       await removeCrosshair();
       setStatus("Crosshair removed!");
+      setXOffset(0);
+      setYOffset(0);
     } catch (error) {
       console.error(error);
       setStatus("Failed to remove crosshair.");
@@ -75,7 +76,6 @@ function Content() {
   };
 
   useEffect(() => {
-    // On initial load, fetch the current offsets
     fetchOffsets();
   }, []);
 
@@ -96,7 +96,6 @@ function Content() {
           Remove Crosshair
         </ButtonItem>
       </PanelSectionRow>
-
       <PanelSectionRow>
         <ButtonItem layout="below" onClick={() => onOffsetClick(0, -1)}>
           Up
@@ -111,7 +110,6 @@ function Content() {
           Down
         </ButtonItem>
       </PanelSectionRow>
-
       <PanelSectionRow>
         <div>Status: {status}</div>
       </PanelSectionRow>
