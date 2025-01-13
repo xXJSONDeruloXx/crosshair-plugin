@@ -118,6 +118,11 @@ function Content() {
           Current Offsets: X = {xOffset}, Y = {yOffset}
         </div>
       </PanelSectionRow>
+      <PanelSectionRow>
+        <div>
+          NOTE: This plugin works by replacing the performance overlay with text that acts as a crosshair in your game. Currently you can not have both a performance overlay and crosshairs at the same time. To restore performance overlay, simply toggle one of the 4 levels from the QAM tab. 
+        </div>
+      </PanelSectionRow>
     </PanelSection>
   );
 }
