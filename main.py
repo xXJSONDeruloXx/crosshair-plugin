@@ -32,6 +32,36 @@ offset_x={offset_x}
 offset_y={offset_y}
 """
 
+async def remove_crosshair(self):
+    try:
+        mangohud_file = None
+        for file in os.listdir("/tmp"):
+            if file.startswith("mangohud"):
+                mangohud_file = os.path.join("/tmp", file)
+                break
+
+        if not mangohud_file:
+            raise FileNotFoundError("MangoHud file not found in /tmp/")
+
+        crosshair_config = f"""
+legacy_layout=false
+background_alpha=0
+alpha=1
+background_color=020202
+text_color=FF007B
+custom_text=
+custom_text=
+custom_text=
+"""
+
+        with open(mangohud_file, "w") as f:
+            f.write(crosshair_config)
+
+        decky.logger.info(f"Crosshair removed in {mangohud_file}")
+    except Exception as e:
+        decky.logger.error(f"Error in remove_crosshair: {str(e)}")
+        raise e
+
             with open(mangohud_file, "w") as f:
                 f.write(crosshair_config)
 
@@ -78,3 +108,7 @@ offset_y={offset_y}
 
     async def _unload(self):
         decky.logger.info("Crosshair Plugin unloaded!")
+
+    async def _main(self):
+        decky.expose_api("remove_crosshair", self.remove_crosshair)
+        decky.logger.info("Crosshair Plugin initialized!")

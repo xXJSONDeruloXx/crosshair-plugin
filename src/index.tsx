@@ -11,8 +11,8 @@ import { FaCrosshairs } from "react-icons/fa";
 // Existing Python methods
 const make800pCrosshair = callable<[], void>("make_800p_crosshair");
 const make1080pCrosshair = callable<[], void>("make_1080p_crosshair");
+const removeCrosshair = callable<[], void>("remove_crosshair");
 const adjustCrosshairOffset = callable<[number, number], void>("adjust_crosshair_offset");
-// New method to fetch the current offsets
 const getCurrentOffsets = callable<[], number[]>("get_current_offsets");
 
 function Content() {
@@ -53,6 +53,16 @@ function Content() {
     }
   };
 
+  const onRemoveClick = async () => {
+    try {
+      await removeCrosshair();
+      setStatus("Crosshair removed!");
+    } catch (error) {
+      console.error(error);
+      setStatus("Failed to remove crosshair.");
+    }
+  };
+
   const onOffsetClick = async (xDelta: number, yDelta: number) => {
     try {
       await adjustCrosshairOffset(xDelta, yDelta);
@@ -79,6 +89,11 @@ function Content() {
       <PanelSectionRow>
         <ButtonItem layout="below" onClick={on1080pClick}>
           Make Crosshair for 1080p
+        </ButtonItem>
+      </PanelSectionRow>
+      <PanelSectionRow>
+        <ButtonItem layout="below" onClick={onRemoveClick}>
+          Remove Crosshair
         </ButtonItem>
       </PanelSectionRow>
 
