@@ -82,6 +82,11 @@ function Content() {
   return (
     <PanelSection title="Crosshair Plugin">
       <PanelSectionRow>
+        <div>
+          NOTE: This plugin works by replacing the performance overlay with text that acts as a crosshair in your game. Currently you can not have both a performance overlay and crosshairs at the same time. To restore performance overlay, simply toggle one of the 4 levels from the QAM tab. 
+        </div>
+      </PanelSectionRow>
+      <PanelSectionRow>
         <ButtonItem layout="below" onClick={on800pClick}>
           Make Crosshair for Deck (800p)
         </ButtonItem>
@@ -116,11 +121,6 @@ function Content() {
       <PanelSectionRow>
         <div>
           Current Offsets: X = {xOffset}, Y = {yOffset}
-        </div>
-      </PanelSectionRow>
-      <PanelSectionRow>
-        <div>
-          NOTE: This plugin works by replacing the performance overlay with text that acts as a crosshair in your game. Currently you can not have both a performance overlay and crosshairs at the same time. To restore performance overlay, simply toggle one of the 4 levels from the QAM tab. 
         </div>
       </PanelSectionRow>
     </PanelSection>
