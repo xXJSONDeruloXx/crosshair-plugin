@@ -39,7 +39,7 @@ offset_y={offset_y}
             raise e
 
     async def make_800p_crosshair(self):
-        self.current_offset_x = 618
+        self.current_offset_x = 631
         self.current_offset_y = 380
         await self.write_crosshair_config(" ", "  +  ", " ", self.current_offset_x, self.current_offset_y)
 
