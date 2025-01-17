@@ -44,9 +44,9 @@ offset_y={offset_y}
         await self.write_crosshair_config(" ", "+", " ", self.current_offset_x, self.current_offset_y)
 
     async def make_1080p_crosshair(self):
-        self.current_offset_x = 938
+        self.current_offset_x = 952
         self.current_offset_y = 520
-        await self.write_crosshair_config("-----", "| + |", "-----", self.current_offset_x, self.current_offset_y)
+        await self.write_crosshair_config(" ", "+", " ", self.current_offset_x, self.current_offset_y)
 
     async def remove_crosshair(self):
         self.current_offset_x = 0
@@ -62,7 +62,7 @@ offset_y={offset_y}
         self.current_offset_x += x_delta
         self.current_offset_y += y_delta
 
-        await self.write_crosshair_config("-----", "| + |", "-----", self.current_offset_x, self.current_offset_y)
+        await self.write_crosshair_config(" ", "+", " ", self.current_offset_x, self.current_offset_y)
 
     async def get_current_offsets(self) -> list:
         if self.current_offset_x is None:
