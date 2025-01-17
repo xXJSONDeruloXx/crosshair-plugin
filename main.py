@@ -41,7 +41,7 @@ offset_y={offset_y}
     async def make_800p_crosshair(self):
         self.current_offset_x = 631
         self.current_offset_y = 380
-        await self.write_crosshair_config(" ", "  +  ", " ", self.current_offset_x, self.current_offset_y)
+        await self.write_crosshair_config(" ", "+", " ", self.current_offset_x, self.current_offset_y)
 
     async def make_1080p_crosshair(self):
         self.current_offset_x = 938
