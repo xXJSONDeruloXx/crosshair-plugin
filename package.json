@@ -1,6 +1,6 @@
 {
   "name": "crosshair",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A Decky plugin that overlays a customizable crosshair for improved aiming precision in games. Perfect for FPS and other accuracy-focused games on the Steam Deck.",
   "type": "module",
   "scripts": {
