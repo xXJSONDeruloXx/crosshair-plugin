@@ -11,9 +11,11 @@ import { FaCrosshairs } from "react-icons/fa";
 // Existing Python methods
 const make800pCrosshair = callable<[], void>("make_800p_crosshair");
 const make1080pCrosshair = callable<[], void>("make_1080p_crosshair");
+const make800pDotCrosshair = callable<[], void>("make_800p_dot_crosshair");
+const make1080pDotCrosshair = callable<[], void>("make_1080p_dot_crosshair");
 const adjustCrosshairOffset = callable<[number, number], void>("adjust_crosshair_offset");
 const getCurrentOffsets = callable<[], number[]>("get_current_offsets");
-const removeCrosshair = callable<[], void>("remove_crosshair"); // New callable
+const removeCrosshair = callable<[], void>("remove_crosshair");
 
 function Content() {
   const [status, setStatus] = useState("No action yet");
@@ -33,7 +35,7 @@ function Content() {
   const on800pClick = async () => {
     try {
       await make800pCrosshair();
-      setStatus("Crosshair for Deck (800p) applied!");
+      setStatus("Crosshair Box (800p) applied!");
       await fetchOffsets();
     } catch (error) {
       console.error(error);
@@ -44,11 +46,33 @@ function Content() {
   const on1080pClick = async () => {
     try {
       await make1080pCrosshair();
-      setStatus("Crosshair for 1080p applied!");
+      setStatus("Crosshair Box for 1080p applied!");
       await fetchOffsets();
     } catch (error) {
       console.error(error);
       setStatus("Failed to apply 1080p crosshair.");
+    }
+  };
+
+  const on800pDotClick = async () => {
+    try {
+      await make800pDotCrosshair();
+      setStatus("Crosshair Dot (800p) applied!");
+      await fetchOffsets();
+    } catch (error) {
+      console.error(error);
+      setStatus("Failed to apply 800p dot crosshair.");
+    }
+  };
+
+  const on1080pDotClick = async () => {
+    try {
+      await make1080pDotCrosshair();
+      setStatus("Crosshair Dot for 1080p applied!");
+      await fetchOffsets();
+    } catch (error) {
+      console.error(error);
+      setStatus("Failed to apply 1080p dot crosshair.");
     }
   };
 
@@ -88,12 +112,22 @@ function Content() {
       </PanelSectionRow>
       <PanelSectionRow>
         <ButtonItem layout="below" onClick={on800pClick}>
-          Make Crosshair for Deck (800p)
+          Make Crosshair Box (800p)
+        </ButtonItem>
+      </PanelSectionRow>
+      <PanelSectionRow>
+        <ButtonItem layout="below" onClick={on800pDotClick}>
+          Make Crosshair Dot (800p)
         </ButtonItem>
       </PanelSectionRow>
       <PanelSectionRow>
         <ButtonItem layout="below" onClick={on1080pClick}>
-          Make Crosshair for 1080p
+          Make Crosshair Box for 1080p
+        </ButtonItem>
+      </PanelSectionRow>
+      <PanelSectionRow>
+        <ButtonItem layout="below" onClick={on1080pDotClick}>
+          Make Crosshair Dot for 1080p
         </ButtonItem>
       </PanelSectionRow>
       <PanelSectionRow>

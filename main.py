@@ -5,6 +5,7 @@ class Plugin:
     def __init__(self):
         self.current_offset_x = None
         self.current_offset_y = None
+        self.current_style = "box"  # Track current crosshair style: "box" or "dot"
 
     def find_mangohud_config_path(self):
         """Find the active MangoHUD config file path by looking for mangoapp process"""
@@ -89,12 +90,26 @@ offset_y={offset_y}"""
     async def make_800p_crosshair(self):
         self.current_offset_x = 618
         self.current_offset_y = 380
+        self.current_style = "box"
         await self.write_crosshair_config("-----", "| + |", "-----", self.current_offset_x, self.current_offset_y)
 
     async def make_1080p_crosshair(self):
         self.current_offset_x = 938
         self.current_offset_y = 520
+        self.current_style = "box"
         await self.write_crosshair_config("-----", "| + |", "-----", self.current_offset_x, self.current_offset_y)
+
+    async def make_800p_dot_crosshair(self):
+        self.current_offset_x = 631
+        self.current_offset_y = 380
+        self.current_style = "dot"
+        await self.write_crosshair_config(" ", "+", " ", self.current_offset_x, self.current_offset_y)
+
+    async def make_1080p_dot_crosshair(self):
+        self.current_offset_x = 952
+        self.current_offset_y = 520
+        self.current_style = "dot"
+        await self.write_crosshair_config(" ", "+", " ", self.current_offset_x, self.current_offset_y)
 
     async def remove_crosshair(self):
         self.current_offset_x = 0
@@ -110,7 +125,11 @@ offset_y={offset_y}"""
         self.current_offset_x += x_delta
         self.current_offset_y += y_delta
 
-        await self.write_crosshair_config("-----", "| + |", "-----", self.current_offset_x, self.current_offset_y)
+        # Use the appropriate crosshair style when adjusting
+        if self.current_style == "dot":
+            await self.write_crosshair_config(" ", "+", " ", self.current_offset_x, self.current_offset_y)
+        else:  # box style
+            await self.write_crosshair_config("-----", "| + |", "-----", self.current_offset_x, self.current_offset_y)
 
     async def get_current_offsets(self) -> list:
         if self.current_offset_x is None:
