@@ -5,7 +5,6 @@ class Plugin:
     def __init__(self):
         self.current_offset_x = None
         self.current_offset_y = None
-        self._config_path = None
 
     def find_mangohud_config_path(self):
         """Find the active MangoHUD config file path by looking for mangoapp process"""
@@ -62,20 +61,10 @@ class Plugin:
 
     async def write_crosshair_config(self, custom_text_1: str, custom_text_2: str, custom_text_3: str, offset_x: int, offset_y: int):
         try:
-            # Find or get cached config path
-            if not self._config_path:
-                self._config_path = self.find_mangohud_config_path()
+            # Always find the current MangoHUD config path - don't cache it
+            config_path = self.find_mangohud_config_path()
 
-            # Read existing config to preserve other settings
-            existing_config = ""
-            try:
-                if os.path.exists(self._config_path):
-                    with open(self._config_path, "r") as f:
-                        existing_config = f.read()
-            except Exception as e:
-                decky.logger.warning(f"Could not read existing config: {str(e)}")
-
-            # Build crosshair config
+            # Build crosshair config - ONLY crosshair settings, nothing else
             crosshair_config = f"""legacy_layout=false
 background_alpha=0
 alpha=1
@@ -87,19 +76,11 @@ custom_text={custom_text_3}
 offset_x={offset_x}
 offset_y={offset_y}"""
 
-            # If existing config has other settings, try to preserve them
-            if existing_config.strip() and "mangopeel_flag" not in existing_config:
-                # This might be a user's custom config, so append our settings
-                final_config = f"{existing_config.strip()}\n\n# Crosshair Plugin Settings\n{crosshair_config}"
-            else:
-                # Use just our crosshair config
-                final_config = crosshair_config
+            # Write ONLY the crosshair config, overwriting the entire file
+            with open(config_path, "w") as f:
+                f.write(crosshair_config)
 
-            # Write the config
-            with open(self._config_path, "w") as f:
-                f.write(final_config)
-
-            decky.logger.info(f"Crosshair configuration written to {self._config_path}")
+            decky.logger.info(f"Crosshair configuration written to {config_path}")
             
         except Exception as e:
             decky.logger.error(f"Error in write_crosshair_config: {str(e)}")
