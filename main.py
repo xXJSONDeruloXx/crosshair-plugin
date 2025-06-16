@@ -5,20 +5,78 @@ class Plugin:
     def __init__(self):
         self.current_offset_x = None
         self.current_offset_y = None
+        self._config_path = None
+
+    def find_mangohud_config_path(self):
+        """Find the active MangoHUD config file path by looking for mangoapp process"""
+        try:
+            # Scan /proc for running processes
+            for proc_dir in os.listdir("/proc"):
+                if not proc_dir.isdigit():
+                    continue
+                
+                proc_path = f"/proc/{proc_dir}"
+                
+                try:
+                    # Read command line to find mangoapp process
+                    with open(f"{proc_path}/cmdline", "r") as f:
+                        cmdline = f.read()
+                    
+                    if "mangoapp" in cmdline:
+                        # Found mangoapp process, now get its environment variables
+                        with open(f"{proc_path}/environ", "r") as f:
+                            environ = f.read()
+                        
+                        # Look for MANGOHUD_CONFIGFILE environment variable
+                        for env_var in environ.split("\0"):
+                            if env_var.startswith("MANGOHUD_CONFIGFILE="):
+                                config_path = env_var.split("=", 1)[1]
+                                decky.logger.info(f"Found MangoHUD config file: {config_path}")
+                                return config_path
+                
+                except (FileNotFoundError, PermissionError, IOError):
+                    # Skip processes we can't read
+                    continue
+            
+            # If no mangoapp process found, try common config locations
+            common_paths = [
+                os.path.expanduser("~/.config/MangoHud/MangoHud.conf"),
+                "/tmp/mangohud.conf",
+                "/tmp/MangoHud.conf"
+            ]
+            
+            for path in common_paths:
+                if os.path.exists(path):
+                    decky.logger.info(f"Using fallback MangoHUD config: {path}")
+                    return path
+            
+            # Create a default config if none exists
+            default_path = "/tmp/mangohud_crosshair.conf"
+            decky.logger.info(f"No MangoHUD config found, creating default: {default_path}")
+            return default_path
+            
+        except Exception as e:
+            decky.logger.error(f"Error finding MangoHUD config: {str(e)}")
+            # Fallback to default location
+            return "/tmp/mangohud_crosshair.conf"
 
     async def write_crosshair_config(self, custom_text_1: str, custom_text_2: str, custom_text_3: str, offset_x: int, offset_y: int):
         try:
-            mangohud_file = None
-            for file in os.listdir("/tmp"):
-                if file.startswith("mangohud"):
-                    mangohud_file = os.path.join("/tmp", file)
-                    break
+            # Find or get cached config path
+            if not self._config_path:
+                self._config_path = self.find_mangohud_config_path()
 
-            if not mangohud_file:
-                raise FileNotFoundError("MangoHud file not found in /tmp/")
+            # Read existing config to preserve other settings
+            existing_config = ""
+            try:
+                if os.path.exists(self._config_path):
+                    with open(self._config_path, "r") as f:
+                        existing_config = f.read()
+            except Exception as e:
+                decky.logger.warning(f"Could not read existing config: {str(e)}")
 
-            crosshair_config = f"""
-legacy_layout=false
+            # Build crosshair config
+            crosshair_config = f"""legacy_layout=false
 background_alpha=0
 alpha=1
 background_color=020202
@@ -27,13 +85,22 @@ custom_text={custom_text_1}
 custom_text={custom_text_2}
 custom_text={custom_text_3}
 offset_x={offset_x}
-offset_y={offset_y}
-"""
+offset_y={offset_y}"""
 
-            with open(mangohud_file, "w") as f:
-                f.write(crosshair_config)
+            # If existing config has other settings, try to preserve them
+            if existing_config.strip() and "mangopeel_flag" not in existing_config:
+                # This might be a user's custom config, so append our settings
+                final_config = f"{existing_config.strip()}\n\n# Crosshair Plugin Settings\n{crosshair_config}"
+            else:
+                # Use just our crosshair config
+                final_config = crosshair_config
 
-            decky.logger.info(f"Crosshair configuration written to {mangohud_file}")
+            # Write the config
+            with open(self._config_path, "w") as f:
+                f.write(final_config)
+
+            decky.logger.info(f"Crosshair configuration written to {self._config_path}")
+            
         except Exception as e:
             decky.logger.error(f"Error in write_crosshair_config: {str(e)}")
             raise e
