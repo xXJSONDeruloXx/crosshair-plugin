@@ -11,8 +11,10 @@ import { FaCrosshairs } from "react-icons/fa";
 // Existing Python methods
 const make800pCrosshair = callable<[], void>("make_800p_crosshair");
 const make1080pCrosshair = callable<[], void>("make_1080p_crosshair");
+const make2160pCrosshair = callable<[], void>("make_2160p_crosshair");
 const make800pDotCrosshair = callable<[], void>("make_800p_dot_crosshair");
 const make1080pDotCrosshair = callable<[], void>("make_1080p_dot_crosshair");
+const make2160pDotCrosshair = callable<[], void>("make_2160p_dot_crosshair");
 const adjustCrosshairOffset = callable<[number, number], void>("adjust_crosshair_offset");
 const getCurrentOffsets = callable<[], number[]>("get_current_offsets");
 const removeCrosshair = callable<[], void>("remove_crosshair");
@@ -54,6 +56,17 @@ function Content() {
     }
   };
 
+   const on2160pClick = async () => {
+    try {
+      await make2160pCrosshair();
+      setStatus("Crosshair Box for 2160p applied!");
+      await fetchOffsets();
+    } catch (error) {
+      console.error(error);
+      setStatus("Failed to apply 2160p crosshair.");
+    }
+  };
+
   const on800pDotClick = async () => {
     try {
       await make800pDotCrosshair();
@@ -73,6 +86,17 @@ function Content() {
     } catch (error) {
       console.error(error);
       setStatus("Failed to apply 1080p dot crosshair.");
+    }
+  };
+
+  const on2160pDotClick = async () => {
+    try {
+      await make2160pDotCrosshair();
+      setStatus("Crosshair Dot for 2160p applied!");
+      await fetchOffsets();
+    } catch (error) {
+      console.error(error);
+      setStatus("Failed to apply 2160p dot crosshair.");
     }
   };
 
@@ -128,6 +152,16 @@ function Content() {
       <PanelSectionRow>
         <ButtonItem layout="below" onClick={on1080pDotClick}>
           Make Crosshair Dot for 1080p
+        </ButtonItem>
+      </PanelSectionRow>
+      <PanelSectionRow>
+        <ButtonItem layout="below" onClick={on2160pDotClick}>
+          Make Crosshair Dot for 2160p
+        </ButtonItem>
+      </PanelSectionRow>
+            <PanelSectionRow>
+        <ButtonItem layout="below" onClick={on2160pClick}>
+          Make Crosshair Box for 2160p
         </ButtonItem>
       </PanelSectionRow>
       <PanelSectionRow>
