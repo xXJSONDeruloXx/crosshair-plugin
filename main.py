@@ -99,6 +99,12 @@ offset_y={offset_y}"""
         self.current_style = "box"
         await self.write_crosshair_config("-----", "| + |", "-----", self.current_offset_x, self.current_offset_y)
 
+    async def make_2160p_crosshair(self):
+        self.current_offset_x = 1900
+        self.current_offset_y = 1060
+        self.current_style = "box"
+        await self.write_crosshair_config("-----", "| + |", "-----", self.current_offset_x, self.current_offset_y)
+
     async def make_800p_dot_crosshair(self):
         self.current_offset_x = 631
         self.current_offset_y = 380
@@ -108,6 +114,12 @@ offset_y={offset_y}"""
     async def make_1080p_dot_crosshair(self):
         self.current_offset_x = 952
         self.current_offset_y = 520
+        self.current_style = "dot"
+        await self.write_crosshair_config(" ", "+", " ", self.current_offset_x, self.current_offset_y)
+
+    async def make_2160p_dot_crosshair(self):
+        self.current_offset_x = 1913
+        self.current_offset_y = 1060
         self.current_style = "dot"
         await self.write_crosshair_config(" ", "+", " ", self.current_offset_x, self.current_offset_y)
 
