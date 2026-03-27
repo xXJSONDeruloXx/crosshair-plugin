@@ -146,22 +146,22 @@ function Content() {
       </PanelSectionRow>
       <PanelSectionRow>
         <ButtonItem layout="below" onClick={on1080pClick}>
-          Make Crosshair Box for 1080p
+          Make Crosshair Box (1080p)
         </ButtonItem>
       </PanelSectionRow>
       <PanelSectionRow>
         <ButtonItem layout="below" onClick={on1080pDotClick}>
-          Make Crosshair Dot for 1080p
+          Make Crosshair Dot (1080p)
         </ButtonItem>
       </PanelSectionRow>
       <PanelSectionRow>
         <ButtonItem layout="below" onClick={on2160pDotClick}>
-          Make Crosshair Dot for 2160p
+          Make Crosshair Dot (2160p)
         </ButtonItem>
       </PanelSectionRow>
             <PanelSectionRow>
         <ButtonItem layout="below" onClick={on2160pClick}>
-          Make Crosshair Box for 2160p
+          Make Crosshair Box (2160p)
         </ButtonItem>
       </PanelSectionRow>
       <PanelSectionRow>
